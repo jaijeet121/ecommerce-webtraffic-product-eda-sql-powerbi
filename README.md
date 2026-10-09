@@ -5,11 +5,28 @@ Understanding the customer journey from initial click to final checkout is criti
 
 Through Exploratory Data Analysis (EDA) and SQL integrations, this project traces the customer funnel to provide practical, data-driven recommendations for improving conversions, optimizing marketing spend, and increasing customer retention.
 
-## 🛠 Tools & Libraries Used
-* **Python:** Pandas, NumPy, SciPy
-* **Database:** SQLite3
-* **Data Visualization:** Matplotlib, Seaborn
-* **Environment:** Jupyter Notebook / Google Colab
+## 🎯 Business Objectives
+
+- Analyze website traffic and overall conversion rates.
+- Identify customer drop-off points across the purchase funnel.
+- Compare conversion rates across marketing campaigns and device types.
+- Evaluate new versus returning visitors and repeat purchase behavior.
+- Investigate cart abandonment and basket size distribution.
+- Identify products frequently purchased together.
+- Analyze product profitability, cost of goods sold, and refund rates.
+- Examine sales trends, average order value, and weekday performance.
+- Apply statistical hypothesis testing to investigate business questions.
+  
+## 🛠️ Tools & Libraries
+
+- **Python** – Data analysis and business insights.
+- **Pandas** – Data cleaning, manipulation, and aggregation.
+- **NumPy** – Numerical computations.
+- **Matplotlib** – Data visualization.
+- **Seaborn** – Statistical visualization.
+- **SciPy** – Statistical hypothesis testing.
+- **Statsmodels** – Proportion-based statistical analysis.
+- **Jupyter Notebook / Google Colab** – Interactive analysis environment.
   
 ## 📊 Dataset Overview
 The analysis is built on a relational database structure exported to an SQLite database (E-comm.db). The core tables include:
@@ -41,3 +58,7 @@ The analysis is built on a relational database structure exported to an SQLite d
 2. Ensure you have the required libraries installed (`pip install pandas numpy scipy matplotlib seaborn`).
 3. Extract the `dataset.zip` folder so the CSV files are available.
 4. Open `E_commerece_(EDA).ipynb` in Jupyter Notebook or Google Colab and run all cells to recreate the database and visual analytics.
+
+
+
+⭐ If you found this project useful, consider giving the repository a star!
