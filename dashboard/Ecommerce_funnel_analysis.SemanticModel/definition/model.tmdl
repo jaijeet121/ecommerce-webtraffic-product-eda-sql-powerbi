@@ -1,0 +1,30 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["order_item_refunds","order_items","orders","products","Web_session","website_pageviews"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table order_item_refunds
+ref table DateTableTemplate_7fdad14e-c1e4-4e4c-8a5b-3c40a22c04b8
+ref table LocalDateTable_46bab896-402c-427a-8d95-41e43a00ad37
+ref table order_items
+ref table LocalDateTable_f6d45a51-d096-4689-8520-7911c577fd59
+ref table orders
+ref table LocalDateTable_a3469d56-7241-43a9-a569-afe018696b11
+ref table products
+ref table LocalDateTable_e5d1098e-e801-44f4-aac0-30b043092a89
+ref table Web_session
+ref table LocalDateTable_96fb15fb-3923-4e2f-9ee5-3c83eb264695
+ref table website_pageviews
+ref table LocalDateTable_0a378d34-0c64-4219-a75e-da1c38bdea18
+
+ref cultureInfo en-US
+

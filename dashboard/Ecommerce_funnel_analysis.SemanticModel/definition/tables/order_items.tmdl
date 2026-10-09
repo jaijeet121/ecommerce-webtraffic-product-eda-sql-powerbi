@@ -1,0 +1,86 @@
+table order_items
+	lineageTag: 1c854ddd-b60d-4d5d-a48f-9ac0800b5330
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b4a77c8f-e964-4211-86e7-9a89e2ccf51a
+		summarizeBy: none
+		sourceColumn: order_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: eae22725-13f2-4aaf-9e9f-059fb6c9f1a8
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: ff5b26aa-d454-4051-a509-ee02922f5a59
+			defaultHierarchy: LocalDateTable_f6d45a51-d096-4689-8520-7911c577fd59.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 94e2cf7a-e55c-413b-b128-6a5337a375e5
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0e259f73-79fa-45ab-ac0f-b116ee0225dd
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_primary_item
+		dataType: int64
+		formatString: 0
+		lineageTag: 6325ce34-0b24-46ec-8b23-f37d077fe5fa
+		summarizeBy: sum
+		sourceColumn: is_primary_item
+
+		annotation SummarizationSetBy = Automatic
+
+	column price_usd
+		dataType: double
+		lineageTag: 047328b6-7482-4dd8-b3d4-bdc9dd8d4407
+		summarizeBy: sum
+		sourceColumn: price_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column cogs_usd
+		dataType: double
+		lineageTag: 4f362a70-07cc-47e6-a16b-4896c8cf6779
+		summarizeBy: sum
+		sourceColumn: cogs_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition order_items = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\datasets\Maven+Fuzzy+Factory maven\website_pageviews full.xlsx"), null, true),
+				    order_items_Sheet = Source{[Item="order_items",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(order_items_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_item_id", Int64.Type}, {"created_at", type datetime}, {"order_id", Int64.Type}, {"product_id", Int64.Type}, {"is_primary_item", Int64.Type}, {"price_usd", type number}, {"cogs_usd", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

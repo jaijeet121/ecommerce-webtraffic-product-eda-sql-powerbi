@@ -1,0 +1,84 @@
+table order_item_refunds
+	lineageTag: b2ca4918-c131-4498-aed0-8367368b011e
+
+	measure 'Refund Rate %' = DIVIDE(SUM('order_item_refunds'[refund_amount_usd]), SUM('order_items'[price_usd]), 0)
+		lineageTag: 9a70c2e9-9c70-4b4f-8d97-afe67782fa7c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_item_refund_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 320f8f32-fe4d-47b2-9fa2-5daf1127966e
+		summarizeBy: sum
+		sourceColumn: order_item_refund_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e7ccbf9d-4036-422e-bb65-c9d1e8213a9e
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: c2b8fddc-a853-46b9-8ee6-f56b14fd8e78
+			defaultHierarchy: LocalDateTable_46bab896-402c-427a-8d95-41e43a00ad37.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ea7332cf-a49d-4771-8bcf-194b526a64eb
+		summarizeBy: none
+		sourceColumn: order_item_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 235290b8-4418-438c-a478-c9ed2a7403c8
+		summarizeBy: sum
+		sourceColumn: order_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column refund_amount_usd
+		dataType: double
+		lineageTag: cd6d2507-c485-431c-97ff-dc0970618774
+		summarizeBy: sum
+		sourceColumn: refund_amount_usd
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition order_item_refunds = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\datasets\Maven+Fuzzy+Factory maven\website_pageviews full.xlsx"), null, true),
+				    order_item_refunds_Sheet = Source{[Item="order_item_refunds",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(order_item_refunds_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_item_refund_id", Int64.Type}, {"created_at", type datetime}, {"order_item_id", Int64.Type}, {"order_id", Int64.Type}, {"refund_amount_usd", type number}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

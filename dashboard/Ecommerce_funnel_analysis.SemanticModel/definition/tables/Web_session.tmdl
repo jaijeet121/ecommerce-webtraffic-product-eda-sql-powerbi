@@ -1,0 +1,105 @@
+table Web_session
+	lineageTag: 49f53fd4-acbc-474f-b0a5-0c125baeb557
+
+	measure Total_Sessions = DISTINCTCOUNT('Web_session'[website_session_id])
+		formatString: 0
+		lineageTag: e376c459-31a2-4027-8a5e-18c61e955675
+
+	column website_session_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 651f3e9f-0487-4c6d-922f-3177c8cbdf1d
+		summarizeBy: none
+		sourceColumn: website_session_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6d90380e-e717-4087-a41a-27b22541b997
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: eaa29159-660c-4bec-a431-7cbe3f73181d
+			defaultHierarchy: LocalDateTable_96fb15fb-3923-4e2f-9ee5-3c83eb264695.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 89d6962a-2f82-459a-a9f0-c3cf60baa908
+		summarizeBy: sum
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_repeat_session
+		dataType: int64
+		formatString: 0
+		lineageTag: bbdae1f3-ea06-42e2-9b00-fa70a92dacdc
+		summarizeBy: sum
+		sourceColumn: is_repeat_session
+
+		annotation SummarizationSetBy = Automatic
+
+	column utm_source
+		dataType: string
+		lineageTag: 819f13aa-62f3-4333-b03a-c75dbc6d7b4e
+		summarizeBy: none
+		sourceColumn: utm_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column utm_campaign
+		dataType: string
+		lineageTag: b2d117e6-78bb-46ca-9768-16b25924d721
+		summarizeBy: none
+		sourceColumn: utm_campaign
+
+		annotation SummarizationSetBy = Automatic
+
+	column utm_content
+		dataType: string
+		lineageTag: ef9b9660-6a09-4e53-9f2f-37851f1b3d06
+		summarizeBy: none
+		sourceColumn: utm_content
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Device Type'
+		dataType: string
+		lineageTag: 0438be6e-d317-4172-a81a-743b99f633be
+		summarizeBy: none
+		sourceColumn: Device Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column http_referer
+		dataType: string
+		lineageTag: d23c7bf4-12e7-49f7-887f-9e9fad3300b6
+		summarizeBy: none
+		sourceColumn: http_referer
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Web_session = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\datasets\Maven+Fuzzy+Factory maven\website_pageviews full.xlsx"), null, true),
+				    Web_session_Sheet = Source{[Item="Web_session",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Web_session_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"website_session_id", Int64.Type}, {"created_at", type datetime}, {"user_id", Int64.Type}, {"is_repeat_session", Int64.Type}, {"utm_source", type text}, {"utm_campaign", type text}, {"utm_content", type text}, {"device_type", type text}, {"http_referer", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"device_type", "Device Type"}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns","NULL","direct",Replacer.ReplaceText,{"utm_campaign"})
+				in
+				    #"Replaced Value"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

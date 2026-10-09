@@ -1,0 +1,47 @@
+table products
+	lineageTag: e9f88c1b-58ea-4561-a086-21b4c262573e
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5dbe9037-9566-4c80-8e34-a94e88803de1
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ba3f73b4-17ec-4ad3-ad6c-2ced171b7ff2
+		summarizeBy: none
+		sourceColumn: created_at
+
+		variation Variation
+			isDefault
+			relationship: 347b2a59-cf5d-4926-8609-e9fb3c8ed81e
+			defaultHierarchy: LocalDateTable_e5d1098e-e801-44f4-aac0-30b043092a89.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: 5f4bc08f-63b6-4b1b-aaa0-76d9d7362863
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("D:\datasets\Maven+Fuzzy+Factory maven\website_pageviews full.xlsx"), null, true),
+				    products_Sheet = Source{[Item="products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product_id", Int64.Type}, {"created_at", type datetime}, {"product_name", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
